@@ -11,18 +11,14 @@ import Foundation
 var typeOfCalculation = false
 var enterOperation = true
 var makeAChoice = true
-var allOperations = ["+", "-", "/", "*" ]
-var allOperationss = ["x+y", "x-y", "x*y","x/y"]
-var randomElements = allOperationss.randomElement() ?? ""
-var randomElement = allOperations.randomElement() ?? ""
-var condition = true // condition not to crash when press enter
-
+var condition = true
+ var opString = ["+", "-", "/", "*"].randomElement() ?? "%"
+var randomOperator = ""
 
 HigherOrderLoop: repeat {
     print("Enter type of calculation, 1 (regular), 2 (high order)?")
     var userInput = readLine() ?? "5 + %"
     
-    //     let userInput = readLine() ?? "$ + 5"
     switch userInput {
     case "1":
         print("Enter your operation, e.g 5 + 3")
@@ -43,12 +39,16 @@ HigherOrderLoop: repeat {
     
     
     func mathStuffFactory(opString: String) -> (Double, Double) -> Double {
-        
-        var opString = opString // want to make opString mutable
-        
+         
+        var opString = opString
+      
         if opString == "?" {
-            opString = ["+", "-", "/", "*"].randomElement() ?? "*"
+            
+            opString = ["+", "-", "/", "*"].randomElement() ?? "%"
         }
+        
+        randomOperator = opString
+
         
         switch opString {
         case "+":
@@ -59,15 +59,12 @@ HigherOrderLoop: repeat {
             return {x, y in x * y }
         case "/":
             return {x, y in x / y }
-            //case "?":
-        //  return {x, y in allOperationss }
         default:
             return {x, y in x + y }
         }
     }
     
-    //let mathFunction = mathStuffFactory(opString: Array[])
-    //let UserInput = readLine() ?? "5 + 5"
+   
     print()
     
     
@@ -76,7 +73,7 @@ HigherOrderLoop: repeat {
         let userInputAsArray = input.components(separatedBy: " ")
         
         let mathFunction = mathStuffFactory(opString: userInputAsArray[1])
-        
+    
         let num1 = Double(userInputAsArray[0]) ?? 0.0
         
         let num2 = Double(userInputAsArray[2]) ?? 0.0
@@ -86,43 +83,32 @@ HigherOrderLoop: repeat {
         let calcu = mathFunction(num1,num2)
         
         return calcu
+        
     }
     
     print(takeInInput(input: userInput))
     
-    func questionMark(input: String) -> Double {
-        let userInputAsArray = input.components(separatedBy: " ")
-        //let input = "?"
-        let mathFunction = mathStuffFactory(opString: userInputAsArray[1])
-        // if opString = "?" {
-        //   let mathFunction = randomElement
-        // }
-        let num1 = Double(userInputAsArray[0]) ?? 0.0
-        let num2 = Double(userInputAsArray[2]) ?? 0.0
-        let calcu = mathFunction(num1,num2)
-        // if opString = "?" {
-        //        for (userInputAsArray) in randomElements {
-        //            if input = "?" {
-        //                return randomElements //  dashes[index] = Character(userInput)
-        //                func applyKTimes (_ K: Int, closure: () -> ()) {
-        //                    for _ in 1...K {
-        //                        closure()
-        //                    }
-        //                }
-        //            }
-        //        }
-        return calcu
-    }
+    print("Guess the operation sign? Type: +, -, /, *")
+    print("opString: \(randomOperator)")
     
-    
-    
-    //        if randomElement.contains(userInput) {
-    //            print("Correct")
-    //        } else {
-    //            print("Wrong. Take another guess.")
-    //            condition false
-    //        } while condition
-    //
+     repeat {
+      
+        var userInput2 = readLine() ?? "0"
+      
+        if userInput2 == randomOperator {
+         
+            print("Correct")
+            condition = false
+                      
+        } else {
+            print("Take another guess")
+            condition = true
+            
+        }
+  
+    } while condition == true
+
+   
     repeat {
         print("Calculate again? Type Yes or No")
         let answer = readLine()?.lowercased() ?? ""
@@ -143,9 +129,4 @@ HigherOrderLoop: repeat {
     
 } while enterOperation
 
-//let calcu = mathFunction(10,5)
-//print("your calculation is \(calcu)")
 
-// 5 + 5
-
-// 10
