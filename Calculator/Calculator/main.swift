@@ -12,10 +12,11 @@ var typeOfCalculation = false
 var enterOperation = true
 var makeAChoice = true
 var condition = true
- var opString = ["+", "-", "/", "*"].randomElement() ?? "%"
+var opString = ["+", "-", "/", "*"].randomElement() ?? "%"
 var randomOperator = ""
+var currentOpString = ""
 
-HigherOrderLoop: repeat {
+repeat {
     print("Enter type of calculation, 1 (regular), 2 (high order)?")
     var userInput = readLine() ?? "5 + %"
     
@@ -39,16 +40,21 @@ HigherOrderLoop: repeat {
     
     
     func mathStuffFactory(opString: String) -> (Double, Double) -> Double {
-         
+        
         var opString = opString
-      
+        
+        
+        
         if opString == "?" {
+            randomOperator = opString
             
             opString = ["+", "-", "/", "*"].randomElement() ?? "%"
+            //   makeAChoice = false
         }
         
-        randomOperator = opString
-
+        currentOpString = opString
+        
+        
         
         switch opString {
         case "+":
@@ -61,10 +67,11 @@ HigherOrderLoop: repeat {
             return {x, y in x / y }
         default:
             return {x, y in x + y }
+            
         }
-    }
+    } 
     
-   
+    
     print()
     
     
@@ -73,7 +80,7 @@ HigherOrderLoop: repeat {
         let userInputAsArray = input.components(separatedBy: " ")
         
         let mathFunction = mathStuffFactory(opString: userInputAsArray[1])
-    
+        
         let num1 = Double(userInputAsArray[0]) ?? 0.0
         
         let num2 = Double(userInputAsArray[2]) ?? 0.0
@@ -88,27 +95,31 @@ HigherOrderLoop: repeat {
     
     print(takeInInput(input: userInput))
     
-    print("Guess the operation sign? Type: +, -, /, *")
-    print("opString: \(randomOperator)")
     
-     repeat {
-      
-        var userInput2 = readLine() ?? "0"
-      
-        if userInput2 == randomOperator {
-         
-            print("Correct")
-            condition = false
-                      
-        } else {
-            print("Take another guess")
-            condition = true
+    if randomOperator == "?" {
+        repeat {
+            print("Guess the operation sign? Type: +, -, /, *")
+            //  print("opString: \(randomOperator)")
             
-        }
-  
-    } while condition == true
-
-   
+            var userInput2 = readLine() ?? "0"
+            
+            if userInput2 == currentOpString {
+                
+                print("Correct")
+                condition = false
+                
+            } else {
+                print("Take another guess")
+                condition = true
+                
+            }
+            
+        } while condition
+    }
+    
+    
+    
+    
     repeat {
         print("Calculate again? Type Yes or No")
         let answer = readLine()?.lowercased() ?? ""
@@ -125,8 +136,8 @@ HigherOrderLoop: repeat {
             print("Enter Yes or No, please!")
         }
         
+        
+        
     } while makeAChoice
     
 } while enterOperation
-
-
